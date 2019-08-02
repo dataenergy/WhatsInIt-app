@@ -1,0 +1,19 @@
+# Initialize new build stage and set base image
+FROM node:10-alpine
+
+# Set the working directory
+WORKDIR /usr/src
+
+# Copy both package.json and package-lock.json to WORKDIR
+COPY package*.json ./
+
+# Install dependencies
+RUN apk add --no-cache bash
+RUN npm install -g expo-cli
+RUN npm install
+
+# Copy all files and directories to WORKDIR
+COPY . .
+
+# Execute when running the image
+CMD ["npm", "run", "dev"]
