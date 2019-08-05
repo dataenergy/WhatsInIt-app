@@ -5,11 +5,15 @@ import * as ImagePicker from 'expo-image-picker'
 import SelectAPictureTile from '../components/SelectAPictureTile'
 
 export default class HomeScreen extends React.Component {
+  // Opens the system UI to choose an image from the phone's library
   handleSelectPicture = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
     })
-    console.log(result)
+    // Navigate to 'AnalyzeScreen' if an image is selected
+    if (!result.cancelled) {
+      this.props.navigation.navigate('Analyze', {imageUri: result.uri, aspectRatio: result.width / result.height})
+    }
   }
 
   render() {
