@@ -10,10 +10,15 @@ export default class HomeScreen extends React.Component {
   handleSelectPicture = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      base64: true,
     })
     // Navigate to 'AnalyzeScreen' after an image is selected
     if (!result.cancelled) {
-      this.props.navigation.navigate('Analyze', {imageUri: result.uri, aspectRatio: result.width / result.height})
+      this.props.navigation.navigate('Analyze', {
+        imageUri: result.uri,
+        encodedImage: result.base64,
+        aspectRatio: result.width / result.height
+      })
     }
   }
 
@@ -21,10 +26,15 @@ export default class HomeScreen extends React.Component {
   handleTakePicture = async () => {
     const result = await ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      base64: true,
     })
     // Navigate to 'AnalyzeScreen' after an image is captured
     if (!result.cancelled) {
-      this.props.navigation.navigate('Analyze', {imageUri: result.uri, aspectRatio: result.width / result.height})
+      this.props.navigation.navigate('Analyze', {
+        imageUri: result.uri,
+        encodedImage: result.base64,
+        aspectRatio: result.width / result.height
+      })
     }
   }
 
