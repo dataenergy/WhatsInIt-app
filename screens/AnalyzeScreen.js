@@ -1,9 +1,13 @@
 import React from 'react'
-import {View, ScrollView, Image, Button, StyleSheet, Dimensions} from 'react-native'
+import {View, ScrollView, Image, Button, Modal, ActivityIndicator, StyleSheet, Dimensions} from 'react-native'
 
 import {callGoogleVisionApi} from '../api'
 
 export default class AnalyzeScreen extends React.Component {
+  state = {
+    loading: false,
+  }
+
   static navigationOptions = {
     headerTransparent: true,
   }
@@ -53,8 +57,12 @@ export default class AnalyzeScreen extends React.Component {
   }
 
   handleAnalyze = async (encodedImage) => {
+    this.setState({ loading: true })
     const result = await callGoogleVisionApi(encodedImage)
     const uniqueResults = this.processResult(result)
+    if (typeof uniqueResults !== 'undefined') {
+      this.setState({ loading: false })
+    }
     // Navigate to the 'ResultScreen' with the image and objects info
     this.props.navigation.navigate('Result', {
       imageUri: this.props.navigation.getParam('imageUri'),
@@ -66,6 +74,15 @@ export default class AnalyzeScreen extends React.Component {
   render() {
     return (
       <View style={styles.mainContainer}>
+        <Modal
+          transparent={true}
+          visible={this.state.loading}
+          onRequestClose={() => { this.setState({ loading: false }) }}
+        >
+          <View style={styles.modalBackground}>
+            <ActivityIndicator size='large' color='#0000ff' />
+          </View>
+        </Modal>
         <ScrollView contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}>
           <Image
             source={{uri: this.props.navigation.getParam('imageUri')}}
@@ -93,5 +110,10 @@ const styles = StyleSheet.create({
     paddingBottom: 17,
     paddingTop: 7,
     marginHorizontal: 40,
+  },
+  modalBackground: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: '#000000aa',
   },
 })

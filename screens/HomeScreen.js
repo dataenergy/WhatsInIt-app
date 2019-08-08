@@ -6,6 +6,16 @@ import SelectAPictureTile from '../components/SelectAPictureTile'
 import TakeAPictureTile from '../components/TakeAPictureTile'
 
 export default class HomeScreen extends React.Component {
+  static navigationOptions = {
+    headerTitle: 'Whatsinit',
+    headerTitleStyle: {
+      color: '#fff',
+    },
+    headerStyle: {
+      backgroundColor: '#666',
+    },
+  }
+
   // Opens the system UI to choose an image from the phone's library
   handleSelectPicture = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
