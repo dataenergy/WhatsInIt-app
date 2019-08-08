@@ -23,6 +23,7 @@ export const callGoogleVisionApi = async (encodedImage) => {
       body: JSON.stringify(reqBody(encodedImage))
     })
     const result = await response.json()
+    return result
   } catch (err) {
     console.log(err)
   }
